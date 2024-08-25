@@ -7,3 +7,4 @@ xlabel('x');
 ylabel('cos(x)');
 grid on;
 
+
