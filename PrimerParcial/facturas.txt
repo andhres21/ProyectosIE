@@ -1,5 +1,9 @@
-Nombre: Juan, Identificación: P456tTYU, Combustible: Diesel, Litros: 4.0, Monto Total: Q128.00
-Nombre: Rosa, Identificación: M567RTQ, Combustible: Premium, Litros: 6.0, Monto Total: Q172.80
-Nombre: Diego, Identificación: P456GTR, Combustible: Regular, Litros: 3.0, Monto Total: Q110.70
-Nombre: Tomas, Identificación: P671GTQ, Combustible: Diesel, Litros: 7.0, Monto Total: Q213.50
-Nombre: Raul, Identificación: M456ERE, Combustible: Regular, Litros: 8.0, Monto Total: Q295.20
+NOMBRE DEL CLIENTE: Andhres
+IDENTIFICACIÓN DEL VEHÍCULO: P678RTY
+TIPO DE COMBUSTIBLE: Premium
+CANTIDAD DE LITROS: 6.0
+PRECIO POR LITRO: Q28.80
+MONTO TOTAL A PAGAR: Q172.80
+
+********************************************
+
