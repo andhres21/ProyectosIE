@@ -13,20 +13,22 @@ endfunction
 
 % Función para actualizar los precios de los combustibles en la base de datos
 function inicializar_precios_combustibles(conn)
-    precios = {'Regular', 36.90; 'Premium', 28.80; 'Diesel', 30.50};
-    for i = 1:size(precios, 1)
-        pq_exec_params(conn, ["INSERT INTO menuPrecios (combustible, precio_por_litro) VALUES ($1, $2) ON CONFLICT (combustible) DO UPDATE SET precio_por_litro = EXCLUDED.precio_por_litro;"], precios{i, :});
-    endfor
+        pq_exec_params(conn, "UPDATE menuPrecios SET precio_por_litro = 36.90 WHERE combustible = 'Regular';");
+        pq_exec_params(conn, "UPDATE menuPrecios SET precio_por_litro = 30.70 WHERE combustible = 'Premium';");
+        pq_exec_params(conn, "UPDATE menuPrecios SET precio_por_litro = 34.20 WHERE combustible = 'Diesel';");
 endfunction
 
 % Función para obtener los precios de todos los combustibles
 function precios = obtener_precios_combustibles(conn)
-    resultados = pq_exec_params(conn, "SELECT combustible, precio_por_litro FROM menuPrecios;");
-    precios = struct();
+    resultados = pq_exec_params(conn, "SELECT combustible, CAST(precio_por_litro AS FLOAT) FROM menuPrecios;");
+    precios = {};
     for i = 1:rows(resultados)
-        precios.(resultados{i, 1}) = resultados{i, 2};
+        campo = char(resultados{i, 1});
+        precios.(campo) = resultados{i, 2}; % Asignación directa utilizando paréntesis
     endfor
 endfunction
+
+
 
 % Función para obtener el precio de un tipo de combustible desde la tabla menuPrecios
 function precio = obtener_precio_combustible(conn, tipo_combustible)
@@ -62,13 +64,13 @@ endfunction
 
 % Función para mostrar todos los registros ingresados
 function mostrar_registros(conn)
-    resultados = pq_exec_params(conn, "SELECT * FROM menuGasolinera;");
-    if isempty(resultados)
+    resultados2 = pq_exec_params(conn, "SELECT * FROM menuGasolinera;");
+    if isempty(resultados2)
         disp("No hay registros en la base de datos.");
     else
         disp("\nRegistros en la base de datos:");
-        for i = 1:rows(resultados)
-            fprintf("ID: %d, Nombre: %s, Identificación: %s, Combustible: %s, Litros: %.2f, Monto Total: Q%.2f\n", resultados{i, 1}, resultados{i, 2}, resultados{i, 3}, resultados{i, 4}, resultados{i, 5}, resultados{i, 6});
+        for i = 1:rows(resultados2)
+            fprintf("ID: %d, Nombre: %s, Identificación: %s, Combustible: %s, Litros: %.2f, Monto Total: Q%.2f\n", resultados2{i, 1}, resultados2{i, 2}, resultados2{i, 3}, resultados2{i, 4}, resultados2{i, 5}, resultados2{i, 6});
         endfor
     endif
 endfunction

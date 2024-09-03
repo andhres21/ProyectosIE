@@ -34,9 +34,9 @@ def crear_tablas(conn):
 # Función para actualizar los precios de los combustibles en la base de datos
 def inicializar_precios_combustibles(conn):
     precios = {
-        'Regular': 36.90,
-        'Premium': 28.80,
-        'Diesel': 30.50
+        'Regular': 8.45,
+        'Premium': 8.75,
+        'Diesel': 7.87
     }
     with conn.cursor() as cursor:
         for combustible, precio in precios.items():
@@ -162,7 +162,7 @@ def main():
             if litros <= 0:
                 raise ValueError("La cantidad de litros debe ser mayor a cero.")
         except ValueError as e:
-            print(f"Error: {e}")
+            print(f"Caracter inválido: Ingrese nuevamente el registro")
             continue
 
         # Calcular el monto total

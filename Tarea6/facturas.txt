@@ -1,0 +1,9 @@
+Cliente: Donald
+NIT: 9870071-0
+Placa: M451JQP
+Entrada: 23:11
+Salida: 05:56
+Tiempo Total: 6 horas y 45 minutos
+Cantidad de horas cobradas: 7 horas
+Monto: Q135.00
+*********************************************
