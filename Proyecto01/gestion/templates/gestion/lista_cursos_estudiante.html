@@ -1,0 +1,11 @@
+<h2>Lista de Cursos Disponibles</h2>
+<ul>
+{% for curso in cursos %}
+    <li>{{ curso.nombre }} - Impartido por: {{ curso.catedratico.first_name }} {{ curso.catedratico.last_name }} - Cupos: {{ curso.cupo }}
+        <form method="post" action="{% url 'inscribirse_curso' curso.id %}">
+            {% csrf_token %}
+            <button type="submit">Inscribirme</button>
+        </form>
+    </li>
+{% endfor %}
+</ul>

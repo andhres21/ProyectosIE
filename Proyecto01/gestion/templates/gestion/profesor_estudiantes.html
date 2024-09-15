@@ -1,0 +1,13 @@
+<h2>Estudiantes inscritos en {{ curso.nombre }}</h2>
+<ul>
+{% for estudiante in estudiantes %}
+    <li>
+        {{ estudiante.first_name }} {{ estudiante.last_name }} - {{ estudiante.email }} <!-- Mostrar nombre y correo -->
+        <a href="{% url 'profesor_asignar_nota' curso.id estudiante.id %}">Asignar/modificar nota</a>
+    </li>
+{% endfor %}
+</ul>
+
+{% if not estudiantes %}
+    <p>No hay estudiantes inscritos en este curso.</p>
+{% endif %}

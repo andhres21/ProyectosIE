@@ -1,0 +1,22 @@
+<h2>Lista de Profesores</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Usuario</th>
+            <th>Correo electrónico</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for profesor in profesores %}
+        <tr>
+            <td>{{ profesor.first_name }}</td>
+            <td>{{ profesor.last_name }}</td>
+            <td>{{ profesor.username }}</td>
+            <td>{{ profesor.email }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

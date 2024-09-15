@@ -1,0 +1,8 @@
+<h2>Mis Cursos</h2>
+<ul>
+{% for curso in cursos %}
+    <li>{{ curso.nombre }} - Cupos: {{ curso.cupo }} 
+        <a href="{% url 'profesor_estudiantes' curso.id %}">Ver estudiantes</a>
+    </li>
+{% endfor %}
+</ul>

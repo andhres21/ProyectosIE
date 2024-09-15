@@ -1,0 +1,6 @@
+<h2>Lista de Cursos</h2>
+<ul>
+{% for curso in cursos %}
+    <li>{{ curso.nombre }} - Impartido por: {{ curso.catedratico.first_name }} {{ curso.catedratico.last_name }} - Cupos: {{ curso.cupo }}</li>
+{% endfor %}
+</ul>
