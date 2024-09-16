@@ -1,0 +1,22 @@
+{% extends 'generales/main.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+  <div class="row">
+      {% for product in products %}
+      <div class="col-md-4">
+          <div class="card">
+              <img src="{% static 'images/' %}{{ product.image }}" class="card-img-top" alt="{{ product.name }}">
+              <div class="card-body">
+                  <h5 class="card-title">{{ product.name }}</h5>
+                  <p class="card-text">Q{{ product.price }}</p>
+                  <a href="#" class="btn btn-primary add-to-cart" data-product-id="{{ product.id }}">Agregar al carrito</a>
+              </div>
+          </div>
+      </div>
+      {% endfor %}
+  </div>
+</div>
+
+
+{% endblock content %}
