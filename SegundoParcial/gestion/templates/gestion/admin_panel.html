@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academia de baile</title>
+    <style>
+        .logout-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="logout-button">
+        <a href="{% url 'logout' %}"><button>Logout</button></a>
+    </div>
+    <h1>ACADEMIA DE BAILE (admin)</h1>
+
+    <a href="{% url 'admin_credenciales' %}"><button>Administrar Credenciales</button></a>
+    <a href="{% url 'ver_bitacora' %}"><button>Visualizar Bitácora</button></a>
+    <a href="{% url 'inventario' %}"><button>Asignar Inventario</button></a>
+    <a href="{% url 'asignar_cursos' %}"><button>Asignar Cursos</button></a>
+    <a href="{% url 'ver_quejas' %}"><button>Visualizar Quejas</button></a>
+
+</body>
+</html>

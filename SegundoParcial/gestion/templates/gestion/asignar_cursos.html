@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asignar Cursos a Instructores</title>
+    <style>
+        .logout-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Botón de logout en la esquina superior derecha -->
+    <div class="logout-button">
+        <a href="{% url 'logout' %}"><button>Logout</button></a>
+    </div>
+
+    <h1>Asignar Cursos a Instructores</h1>
+
+    <!-- Formulario para crear un curso -->
+    <form method="post">
+        {% csrf_token %}
+        <label for="nombre">Nombre:</label>
+        <input type="text" name="nombre" id="nombre"><br>
+
+        <label for="descripcion">Descripción:</label>
+        <textarea name="descripcion" id="descripcion"></textarea><br>
+
+        <label for="seccion_horario">Horario:</label>
+        <input type="text" name="seccion_horario" id="seccion_horario"><br>
+
+        <label for="cupo">Cupo:</label>
+        <input type="number" name="cupo" id="cupo" value="20"><br>
+
+        <button type="submit" name="crear_curso">Crear curso</button>
+    </form>
+
+    <!-- Listado de cursos existentes -->
+    <h2>Cursos existentes</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Curso</th>
+                <th>Descripción</th>
+                <th>Horario</th>
+                <th>Cupo máximo</th>
+                <th>Sección A</th>
+                <th>Sección B</th>
+                <th>Sección C</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in cursos_con_secciones %}
+            <tr>
+                <td>{{ item.curso.nombre }}</td>
+                <td>{{ item.curso.descripcion }}</td>
+                <td>{{ item.curso.seccion_horario }}</td>
+                <td>{{ item.curso.cupo }}</td>
+                <td>{{ item.seccion_a }}</td>
+                <td>{{ item.seccion_b }}</td>
+                <td>{{ item.seccion_c }}</td>
+                <td>
+                    <a href="{% url 'asignar_profesores' item.curso.id %}">Editar asignación</a>
+                    <a href="{% url 'editar_curso' item.curso.id %}">Editar curso</a>
+                    <a href="{% url 'eliminar_curso' item.curso.id %}">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+<!-- Botón para regresar a la página anterior centrado -->
+<div style="margin-top: 20px; text-align: center;">
+    <button onclick="window.history.back()">Regresar</button>
+</div>
+
+</body>
+</html>

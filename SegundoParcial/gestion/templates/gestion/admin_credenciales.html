@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrar Credenciales</title>
+    <style>
+        .logout-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="logout-button">
+        <a href="{% url 'logout' %}"><button>Logout</button></a>
+    </div>
+    <h1>Administrar Credenciales</h1>
+
+    <h2>Crear Usuario</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Crear Usuario</button>
+    </form>
+
+    <h2>Usuarios Existentes</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre de usuario</th>
+                <th>Correo electrónico</th>
+                <th>Administrador</th>
+                <th>Instructor</th>
+                <th>Alumno</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for usuario in usuarios %}
+            <tr>
+                <td>{{ usuario.username }}</td>
+                <td>{{ usuario.email }}</td>
+                <td>{% if usuario.is_admin %}Sí{% else %}{% endif %}</td>
+                <td>{% if usuario.is_instructor %}Sí{% else %}{% endif %}</td>
+                <td>{% if usuario.is_alumno %}Sí{% else %}{% endif %}</td>
+                <td>
+                    <a href="{% url 'editar_usuario' usuario.id %}">Editar</a> | 
+                    <a href="{% url 'eliminar_usuario' usuario.id %}">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+<!-- Botón para regresar a la página anterior centrado -->
+<div style="margin-top: 20px; text-align: center;">
+    <button onclick="window.history.back()">Regresar</button>
+</div>
+
+</body>
+</html>

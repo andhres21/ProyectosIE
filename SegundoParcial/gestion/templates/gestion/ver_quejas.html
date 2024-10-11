@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualización de quejas</title>
+    <style>
+        .logout-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="logout-button">
+        <a href="{% url 'logout' %}"><button>Logout</button></a>
+    </div>
+    <h1>Visualización de quejas</h1>
+<!-- Botón para regresar a la página anterior centrado -->
+<div style="margin-top: 20px; text-align: center;">
+    <button onclick="window.history.back()">Regresar</button>
+</div>
+
+</body>
+</html>
+

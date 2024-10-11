@@ -1,0 +1,47 @@
+<h1>Inventario</h1>
+
+<!-- Sección 1: Crear nuevo producto -->
+<form method="post">
+    {% csrf_token %}
+    <label for="nombre">Nombre del producto:</label>
+    <input type="text" name="nombre" id="nombre"><br>
+
+    <label for="cantidad_total">Cantidad inicial:</label>
+    <input type="number" name="cantidad_total" id="cantidad_total"><br>
+
+    <button type="submit">Crear producto</button>
+</form>
+
+<!-- Sección 2: Tabla de inventario -->
+<h2>Inventario Actual</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Artículo</th>
+            <th>Disponible</th>
+            <th>Prestado</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in inventario %}
+        <tr>
+            <td>{{ item.nombre }}</td>
+            <td>{{ item.cantidad_disponible }}</td>
+            <td>{{ item.cantidad_prestada }}</td>
+            <td>{{ item.cantidad_total }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+<!-- Botón de Regresar -->
+<div style="text-align: center;">
+    <a href="javascript:history.back()"><button>Regresar</button></a>
+</div>
+
+<!-- Botón de Logout -->
+<div class="logout-button" style="position: absolute; top: 10px; right: 10px;">
+    <a href="{% url 'logout' %}"><button>Logout</button></a>
+</div>

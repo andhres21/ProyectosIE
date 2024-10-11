@@ -1,0 +1,48 @@
+<h2>Asignar/Reasignar instructores al curso "{{ curso.nombre }}"</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    
+    <table>
+        <tr>
+            <th>Sección</th>
+            <th>Instructor</th>
+        </tr>
+        <tr>
+            <td>Sección A</td>
+            <td>
+                <select name="seccion_a">
+                    <option value="">-- Sin asignar --</option>  <!-- Opción vacía para permitir no asignar -->
+                    {% for instructor in instructores %}
+                    <option value="{{ instructor.id }}">{{ instructor.username }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Sección B</td>
+            <td>
+                <select name="seccion_b">
+                    <option value="">-- Sin asignar --</option>  <!-- Opción vacía -->
+                    {% for instructor in instructores %}
+                    <option value="{{ instructor.id }}">{{ instructor.username }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Sección C</td>
+            <td>
+                <select name="seccion_c">
+                    <option value="">-- Sin asignar --</option>  <!-- Opción vacía -->
+                    {% for instructor in instructores %}
+                    <option value="{{ instructor.id }}">{{ instructor.username }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
+    </table>
+
+    <button type="submit">Asignar Profesores</button>
+    <a href="{% url 'asignar_cursos' %}">Cancelar</a>
+</form>
