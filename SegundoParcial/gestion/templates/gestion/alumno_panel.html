@@ -1,21 +1,17 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal estudiantil</title>
-    <style>
-        .logout-button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-        }
-    </style>
-</head>
-<body>
-    <div class="logout-button">
-        <a href="{% url 'logout' %}"><button>Logout</button></a>
+{% extends 'gestion/base.html' %}
+
+{% block title %}Portal Estudiantil{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center mt-5">
+    <div class="card shadow-lg" style="width: 50%;">
+        <div class="card-header bg-primary text-white text-center">
+            <h4 class="mb-0">ACADEMIA DE BAILE (Estudiantes)</h4>
+        </div>
+        <div class="card-body text-center">
+            <a href="{% url 'asignar_cursos_alumno' %}" class="btn btn-info btn-lg btn-block mb-3">Asignación y Horarios de Cursos</a>
+            <a href="{% url 'atencion_cliente' %}" class="btn btn-info btn-lg btn-block">Atención al Cliente</a>
+        </div>
     </div>
-    <h1>ACADEMIA DE BAILE (estudiantes)</h1>
-</body>
-</html>
+</div>
+{% endblock %}

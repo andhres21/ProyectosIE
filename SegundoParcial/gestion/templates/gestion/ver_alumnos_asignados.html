@@ -1,0 +1,65 @@
+{% extends 'gestion/base.html' %}
+
+{% block title %}Alumnos Asignados{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">Alumnos Asignados</h4>
+    </div>
+    <div class="card-body">
+        {% if cursos %}
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Curso</th>
+                        <th>Sección</th>
+                        <th>Horario</th>
+                        <th>Alumnos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for curso in cursos %}
+                    <tr>
+                        <td>{{ curso.curso.nombre }}</td>
+                        <td>{{ curso.seccion }}</td>
+                        <td>{{ curso.curso.horario }}</td>
+                        <td>
+                            {% if curso.alumnos.all %}
+                                <button class="btn btn-info btn-sm" onclick="toggleAlumnos('{{ curso.curso.id }}')">Ver alumnos</button>
+                                <ul id="alumnos-{{ curso.curso.id }}" style="display: none; margin-top: 5px;">
+                                    {% for alumno in curso.alumnos.all %}
+                                    <li>{{ alumno.username }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                No hay alumnos asignados.
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No tienes cursos asignados actualmente.</p>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Botón de regreso al panel de administración -->
+<div class="text-center mt-4">
+    <a href="{% url 'instructor_panel' %}" class="btn btn-secondary">Regresar</a>
+</div>
+
+
+<script>
+    function toggleAlumnos(cursoId) {
+        const alumnosList = document.getElementById(`alumnos-${cursoId}`);
+        if (alumnosList.style.display === "none") {
+            alumnosList.style.display = "block";
+        } else {
+            alumnosList.style.display = "none";
+        }
+    }
+</script>
+{% endblock %}

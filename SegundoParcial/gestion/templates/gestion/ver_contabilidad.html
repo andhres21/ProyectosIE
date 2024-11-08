@@ -1,0 +1,54 @@
+{% extends 'gestion/base.html' %}
+
+{% block title %}Contabilidad{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-success text-white">
+            <h4 class="mb-0 text-center">Resumen de Contabilidad</h4>
+        </div>
+        <div class="card-body">
+            <h5 class="text-center">Ingresos Totales: ${{ ingresos_totales }}</h5>
+        </div>
+    </div>
+
+    <div class="card shadow-sm mt-4">
+        <div class="card-header bg-secondary text-white">
+            <h5 class="mb-0">Detalles de Pagos</h5>
+        </div>
+        <div class="card-body">
+            {% if pagos %}
+            <div class="table-responsive">
+                <table class="table table-striped table-hover text-center">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Alumno</th>
+                            <th>Curso</th>
+                            <th>Monto Pagado</th>
+                            <th>Fecha de Pago</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for pago in pagos %}
+                        <tr>
+                            <td>{{ pago.alumno.username }}</td>
+                            <td>{{ pago.curso.nombre }}</td>
+                            <td>${{ pago.monto_pagado }}</td>
+                            <td>{{ pago.fecha_pago|date:"d/m/Y H:i" }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="text-center">No hay registros de pagos disponibles.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="text-center mt-4">
+    <a href="{% url 'admin_panel' %}" class="btn btn-secondary">Regresar</a>
+</div>
+{% endblock %}

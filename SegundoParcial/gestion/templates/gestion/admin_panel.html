@@ -1,28 +1,45 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Academia de baile</title>
-    <style>
-        .logout-button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-        }
-    </style>
-</head>
-<body>
-    <div class="logout-button">
-        <a href="{% url 'logout' %}"><button>Logout</button></a>
+{% extends 'gestion/base.html' %}
+
+{% block title %}Panel de Administración{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center mt-5">
+    <div class="card shadow-lg" style="width: 60%;">
+        <div class="card-header bg-dark text-white text-center">
+            <h4 class="mb-0">ACADEMIA DE BAILE (Admin)</h4>
+        </div>
+        <div class="card-body">
+            <div class="row text-center">
+                <div class="col-md-6 mb-3">
+                    <a href="{% url 'admin_credenciales' %}" class="btn btn-info btn-block">
+                        <i class="fas fa-user-cog mr-2"></i> Administrar Credenciales
+                    </a>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <a href="{% url 'ver_bitacora' %}" class="btn btn-info btn-block">
+                        <i class="fas fa-book mr-2"></i> Visualizar Bitácora
+                    </a>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <a href="{% url 'inventario' %}" class="btn btn-info btn-block">
+                        <i class="fas fa-box-open mr-2"></i> Asignar Inventario
+                    </a>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <a href="{% url 'asignar_cursos' %}" class="btn btn-info btn-block">
+                        <i class="fas fa-chalkboard-teacher mr-2"></i> Asignar Cursos
+                    </a>
+                </div>
+                <div class="col-md-12">
+                    <a href="{% url 'ver_quejas' %}" class="btn btn-info btn-block">
+                        <i class="fas fa-comment-dots mr-2"></i> Visualizar Quejas
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
-    <h1>ACADEMIA DE BAILE (admin)</h1>
+</div>
 
-    <a href="{% url 'admin_credenciales' %}"><button>Administrar Credenciales</button></a>
-    <a href="{% url 'ver_bitacora' %}"><button>Visualizar Bitácora</button></a>
-    <a href="{% url 'inventario' %}"><button>Asignar Inventario</button></a>
-    <a href="{% url 'asignar_cursos' %}"><button>Asignar Cursos</button></a>
-    <a href="{% url 'ver_quejas' %}"><button>Visualizar Quejas</button></a>
-
-</body>
-</html>
+<!-- Cargar Font Awesome para iconos -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+{% endblock %}

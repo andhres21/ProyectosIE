@@ -1,0 +1,51 @@
+{% extends 'gestion/base.html' %}
+
+{% block title %}Devolver Inventario{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">Devolver Inventario</h4>
+    </div>
+    <div class="card-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Instructor</th>
+                    <th>Artículo</th>
+                    <th>Cantidad Asignada</th>
+                    <th>Cantidad a Devolver</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for asignacion in asignaciones %}
+                <tr>
+                    <td>{{ asignacion.usuario.username }}</td>
+                    <td>{{ asignacion.inventario.nombre }}</td>
+                    <td>{{ asignacion.cantidad_asignada }}</td>
+                    <td>
+                        <form method="post" onsubmit="return validarDevolucion('{{ asignacion.cantidad_asignada }}');">
+                            {% csrf_token %}
+                            <input type="number" name="cantidad_devolver" class="form-control" min="0" max="{{ asignacion.cantidad_asignada }}" value="0" required>
+                            <input type="hidden" name="asignacion_id" value="{{ asignacion.id }}">
+                            <button type="submit" class="btn btn-primary btn-sm mt-2">Devolver</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function validarDevolucion(maxCantidad) {
+        const cantidad = parseInt(document.querySelector('input[name="cantidad_devolver"]').value);
+        if (cantidad < 0 || cantidad > maxCantidad) {
+            alert("Por favor, ingresa una cantidad válida para devolver.");
+            return false;
+        }
+        return true;
+    }
+</script>
+{% endblock %}

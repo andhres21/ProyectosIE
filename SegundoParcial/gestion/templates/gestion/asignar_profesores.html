@@ -1,48 +1,52 @@
-<h2>Asignar/Reasignar instructores al curso "{{ curso.nombre }}"</h2>
+{% extends 'gestion/base.html' %}
 
-<form method="POST">
-    {% csrf_token %}
-    
-    <table>
-        <tr>
-            <th>Sección</th>
-            <th>Instructor</th>
-        </tr>
-        <tr>
-            <td>Sección A</td>
-            <td>
-                <select name="seccion_a">
-                    <option value="">-- Sin asignar --</option>  <!-- Opción vacía para permitir no asignar -->
-                    {% for instructor in instructores %}
-                    <option value="{{ instructor.id }}">{{ instructor.username }}</option>
-                    {% endfor %}
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td>Sección B</td>
-            <td>
-                <select name="seccion_b">
-                    <option value="">-- Sin asignar --</option>  <!-- Opción vacía -->
-                    {% for instructor in instructores %}
-                    <option value="{{ instructor.id }}">{{ instructor.username }}</option>
-                    {% endfor %}
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td>Sección C</td>
-            <td>
-                <select name="seccion_c">
-                    <option value="">-- Sin asignar --</option>  <!-- Opción vacía -->
-                    {% for instructor in instructores %}
-                    <option value="{{ instructor.id }}">{{ instructor.username }}</option>
-                    {% endfor %}
-                </select>
-            </td>
-        </tr>
-    </table>
+{% block title %}Asignar/Reasignar Instructores{% endblock %}
 
-    <button type="submit">Asignar Profesores</button>
-    <a href="{% url 'asignar_cursos' %}">Cancelar</a>
-</form>
+{% block content %}
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-secondary text-white">
+        <h4 class="mb-0">Asignar/Reasignar Instructores al Curso "{{ curso.nombre }}"</h4>
+    </div>
+    <div class="card-body">
+        <form method="POST" onsubmit="return validarAsignacion();">
+            {% csrf_token %}
+            <table class="table">
+                <tr>
+                    <th>Sección</th>
+                    <th>Instructor</th>
+                </tr>
+                {% for seccion in 'ABC' %}
+                <tr>
+                    <td>Sección {{ seccion }}</td>
+                    <td>
+                        <select name="seccion_{{ seccion }}" class="form-control">
+                            <option value="">-- Sin asignar --</option>
+                            {% for instructor in instructores %}
+                                <option value="{{ instructor.id }}">{{ instructor.username }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+                {% endfor %}               
+            </table>
+            <button type="submit" class="btn btn-primary">Asignar Profesores</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function validarAsignacion() {
+        // Validación simple: asegurarse de que al menos una sección tenga un instructor asignado
+        const selects = document.querySelectorAll('select');
+        let isAssigned = false;
+        selects.forEach(select => {
+            if (select.value) isAssigned = true;
+        });
+        if (!isAssigned) {
+            alert("Debe asignar al menos un instructor a una sección.");
+            return false;
+        }
+        return true;
+    }
+</script>
+{% endblock %}

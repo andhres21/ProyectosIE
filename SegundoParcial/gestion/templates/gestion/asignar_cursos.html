@@ -1,56 +1,48 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Asignar Cursos a Instructores</title>
-    <style>
-        .logout-button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-        }
-    </style>
-</head>
-<body>
+{% extends 'gestion/base.html' %}
 
-    <!-- Botón de logout en la esquina superior derecha -->
-    <div class="logout-button">
-        <a href="{% url 'logout' %}"><button>Logout</button></a>
+{% block title %}Asignar Cursos a Instructores{% endblock %}
+
+{% block content %}
+<h1 class="my-4">Asignar Cursos a Instructores</h1>
+
+<!-- Mostrar mensajes de éxito o error -->
+{% if messages %}
+    <div class="container mb-4">
+        {% for message in messages %}
+            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endfor %}
     </div>
+{% endif %}
 
-    <h1>Asignar Cursos a Instructores</h1>
+<!-- Formulario en una tarjeta estilizada -->
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-secondary text-white">
+        <h4 class="mb-0">Agregar un Nuevo Curso</h4>
+    </div>
+    <div class="card-body">
+        <form method="post" onsubmit="return validarFormulario();">
+            {% csrf_token %}
+            {{ crear_curso_form.as_p }}  <!-- Renderiza todo el formulario como párrafos -->
+            <button type="submit" class="btn btn-dark">Crear curso</button>
+        </form>
+    </div>
+</div>
 
-    <!-- Formulario para crear un curso -->
-    <form method="post">
-        {% csrf_token %}
-        <label for="nombre">Nombre:</label>
-        <input type="text" name="nombre" id="nombre"><br>
+<h2 class="my-4">Cursos existentes</h2>
 
-        <label for="descripcion">Descripción:</label>
-        <textarea name="descripcion" id="descripcion"></textarea><br>
-
-        <label for="seccion_horario">Horario:</label>
-        <input type="text" name="seccion_horario" id="seccion_horario"><br>
-
-        <label for="cupo">Cupo:</label>
-        <input type="number" name="cupo" id="cupo" value="20"><br>
-
-        <button type="submit" name="crear_curso">Crear curso</button>
-    </form>
-
-    <!-- Listado de cursos existentes -->
-    <h2>Cursos existentes</h2>
-    <table>
-        <thead>
+<!-- Tabla con detalles colapsables y botón de acciones -->
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead class="thead-dark">
             <tr>
                 <th>Curso</th>
                 <th>Descripción</th>
-                <th>Horario</th>
-                <th>Cupo máximo</th>
-                <th>Sección A</th>
-                <th>Sección B</th>
-                <th>Sección C</th>
+                <th>Costo</th>  <!-- Nueva columna para el costo -->
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -58,25 +50,58 @@
             {% for item in cursos_con_secciones %}
             <tr>
                 <td>{{ item.curso.nombre }}</td>
-                <td>{{ item.curso.descripcion }}</td>
-                <td>{{ item.curso.seccion_horario }}</td>
-                <td>{{ item.curso.cupo }}</td>
-                <td>{{ item.seccion_a }}</td>
-                <td>{{ item.seccion_b }}</td>
-                <td>{{ item.seccion_c }}</td>
                 <td>
-                    <a href="{% url 'asignar_profesores' item.curso.id %}">Editar asignación</a>
-                    <a href="{% url 'editar_curso' item.curso.id %}">Editar curso</a>
-                    <a href="{% url 'eliminar_curso' item.curso.id %}">Eliminar</a>
+                    <button class="btn btn-info btn-sm" onclick="toggleDetalles('{{ item.curso.id }}')">Ver detalles</button>
+                </td>
+                <td>${{ item.curso.costo }}</td>  <!-- Mostrar el costo del curso -->
+                <td>
+                    <button class="btn btn-secondary btn-sm" onclick="toggleAcciones('{{ item.curso.id }}')">Acción</button>
+                    <div id="acciones-{{ item.curso.id }}" style="display:none; margin-top: 5px;">
+                        <a href="{% url 'asignar_profesores' item.curso.id %}" class="btn btn-sm btn-warning mb-1">Editar asignación</a>
+                        <a href="{% url 'editar_curso' item.curso.id %}" class="btn btn-sm btn-info mb-1">Editar curso</a>
+                        <a href="{% url 'eliminar_curso' item.curso.id %}" class="btn btn-sm btn-danger mb-1" onclick="return confirm('¿Estás seguro de que deseas eliminar este curso?');">Eliminar</a>
+                    </div>
+                </td>
+            </tr>
+            <!-- Fila colapsable con detalles del curso -->
+            <tr id="detalles-{{ item.curso.id }}" style="display:none;">
+                <td colspan="4">
+                    <p><strong>Descripción:</strong> {{ item.curso.descripcion }}</p>
+                    <p><strong>Horario:</strong> {{ item.curso.horario }}</p>
+                    <p><strong>Cupo máximo:</strong> {{ item.curso.cupo_maximo }}</p>
+                    <p><strong>Costo:</strong> ${{ item.curso.costo }}</p>
+                    <p><strong>Sección A:</strong> {{ item.seccion_a }}</p>
+                    <p><strong>Sección B:</strong> {{ item.seccion_b }}</p>
+                    <p><strong>Sección C:</strong> {{ item.seccion_c }}</p>
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-<!-- Botón para regresar a la página anterior centrado -->
-<div style="margin-top: 20px; text-align: center;">
-    <button onclick="window.history.back()">Regresar</button>
 </div>
 
-</body>
-</html>
+<div class="text-center mt-4">
+    <a href="{% url 'admin_panel' %}" class="btn btn-secondary">Regresar</a>
+</div>
+
+<script>
+    function validarFormulario() {
+        const cupoMaximo = document.querySelector('input[name="cupo_maximo"]');
+        if (cupoMaximo && cupoMaximo.value <= 0) {
+            alert('El cupo máximo debe ser un número positivo.');
+            return false;
+        }
+        return true;
+    }
+
+    function toggleDetalles(id) {
+        const detalles = document.getElementById(`detalles-${id}`);
+        detalles.style.display = detalles.style.display === "none" ? "table-row" : "none";
+    }
+
+    function toggleAcciones(id) {
+        const acciones = document.getElementById(`acciones-${id}`);
+        acciones.style.display = acciones.style.display === "none" ? "block" : "none";
+    }
+</script>
+{% endblock %}

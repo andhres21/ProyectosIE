@@ -1,19 +1,28 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Curso</title>
-</head>
-<body>
-    <h1>Editar Curso</h1>
-    
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Guardar cambios</button>
-    </form>
+{% extends 'gestion/base.html' %}
 
-    <a href="{% url 'asignar_cursos' %}">Volver a la lista de cursos</a>
-</body>
-</html>
+{% block title %}Editar Curso{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-secondary text-white">
+        <h4 class="mb-0">Editar Curso</h4>
+    </div>
+    <div class="card-body">
+        <form method="post" onsubmit="return validarFormulario();">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+        </form>
+    </div>
+</div>
+<script>
+    function validarFormulario() {
+        const cupoMaximo = document.querySelector('input[name="cupo_maximo"]');
+        if (cupoMaximo && cupoMaximo.value <= 0) {
+            alert('El cupo máximo debe ser un número positivo.');
+            return false;
+        }
+        return true;
+    }
+</script>
+{% endblock %}

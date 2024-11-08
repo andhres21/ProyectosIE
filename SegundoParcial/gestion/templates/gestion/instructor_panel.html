@@ -1,21 +1,45 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resgistro de Estudiantes</title>
-    <style>
-        .logout-button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-        }
-    </style>
-</head>
-<body>
-    <div class="logout-button">
-        <a href="{% url 'logout' %}"><button>Logout</button></a>
+{% extends 'gestion/base.html' %}
+
+{% block title %}Panel del Instructor{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center mt-5">
+    <div class="card shadow-lg" style="width: 60%;">
+        <div class="card-header bg-dark text-white text-center">
+            <h4 class="mb-0">ACADEMIA DE BAILE (Instructor)</h4>
+        </div>
+        <div class="card-body">
+            <div class="row text-center">
+                <div class="col-md-6 mb-3">
+                    <a href="{% url 'ver_alumnos_asignados' %}" class="btn btn-info btn-block">
+                        <i class="fas fa-user-graduate mr-2"></i> Ver Alumnos Asignados
+                    </a>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <a href="{% url 'administrar_inscripciones' %}" class="btn btn-info btn-block">
+                        <i class="fas fa-clipboard-list mr-2"></i> Administrar Inscripciones
+                    </a>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <a href="{% url 'administrar_inventario' %}" class="btn btn-info btn-block">
+                        <i class="fas fa-box mr-2"></i> Ver Inventario Asignado
+                    </a>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <a href="{% url 'enviar_reporte' %}" class="btn btn-info btn-block">
+                        <i class="fas fa-file-alt mr-2"></i> Enviar Reporte
+                    </a>
+                </div>
+                <div class="col-md-12">
+                    <a href="{% url 'enviar_retroalimentacion' %}" class="btn btn-info btn-block">
+                        <i class="fas fa-comments mr-2"></i> Enviar Retroalimentación
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
-    <h1>ACADEMIA DE BAILE (instructores)</h1>
-</body>
-</html>
+</div>
+
+<!-- Cargar Font Awesome para iconos -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+{% endblock %}

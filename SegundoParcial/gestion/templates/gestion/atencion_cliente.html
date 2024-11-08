@@ -1,0 +1,67 @@
+{% extends 'gestion/base.html' %}
+
+{% block title %}Atención al Cliente{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center mt-5">
+    <div class="card shadow-lg" style="width: 50%;">
+        <div class="card-header bg-info text-white text-center">
+            <h4 class="mb-0">Ingresar una Queja</h4>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="asunto" class="font-weight-bold">Asunto:</label>
+                    <input type="text" name="asunto" id="asunto" class="form-control" placeholder="Ingrese el asunto de la queja" required>
+                </div>
+                <div class="form-group">
+                    <label for="descripcion" class="font-weight-bold">Descripción:</label>
+                    <textarea name="descripcion" id="descripcion" class="form-control" rows="4" placeholder="Describa el motivo de su queja" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Enviar Queja</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Tabla de retroalimentaciones del instructor -->
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-secondary text-white">
+            <h4 class="mb-0">Mensajes de Retroalimentación del Instructor</h4>
+        </div>
+        <div class="card-body">
+            {% if retroalimentaciones %}
+                <table class="table table-striped table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Instructor</th>
+                            <th>Curso</th>
+                            <th>Mensaje</th>
+                            <th>Fecha de Envío</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for retro in retroalimentaciones %}
+                        <tr>
+                            <td>{{ retro.instructor.username }}</td>
+                            <td>{{ retro.curso.nombre }}</td>
+                            <td>{{ retro.mensaje }}</td>
+                            <td>{{ retro.fecha_envio|date:"d/m/Y H:i" }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>No tienes mensajes de retroalimentación.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Botón de regreso centrado debajo del formulario -->
+<div class="text-center mt-4">
+    <a href="{% url 'alumno_panel' %}" class="btn btn-secondary">Regresar</a>
+</div>
+{% endblock %}

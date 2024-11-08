@@ -1,47 +1,61 @@
-<h1>Inventario</h1>
+{% extends 'gestion/base.html' %}
 
-<!-- Sección 1: Crear nuevo producto -->
-<form method="post">
-    {% csrf_token %}
-    <label for="nombre">Nombre del producto:</label>
-    <input type="text" name="nombre" id="nombre"><br>
+{% block title %}Gestión del Inventario{% endblock %}
 
-    <label for="cantidad_total">Cantidad inicial:</label>
-    <input type="number" name="cantidad_total" id="cantidad_total"><br>
-
-    <button type="submit">Crear producto</button>
-</form>
-
-<!-- Sección 2: Tabla de inventario -->
-<h2>Inventario Actual</h2>
-<table>
-    <thead>
-        <tr>
-            <th>Artículo</th>
-            <th>Disponible</th>
-            <th>Prestado</th>
-            <th>Total</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for item in inventario %}
-        <tr>
-            <td>{{ item.nombre }}</td>
-            <td>{{ item.cantidad_disponible }}</td>
-            <td>{{ item.cantidad_prestada }}</td>
-            <td>{{ item.cantidad_total }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-
-
-<!-- Botón de Regresar -->
-<div style="text-align: center;">
-    <a href="javascript:history.back()"><button>Regresar</button></a>
+{% block content %}
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-secondary text-white">
+        <h4 class="mb-0">Crear Nuevo Producto</h4>
+    </div>
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="nombre">Nombre del producto:</label>
+                <input type="text" name="nombre" id="nombre" required class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="cantidad_total">Cantidad inicial:</label>
+                <input type="number" name="cantidad_total" id="cantidad_total" min="1" required class="form-control">
+            </div>
+            <button type="submit" class="btn btn-success">Crear producto</button>
+        </form>
+    </div>
 </div>
 
-<!-- Botón de Logout -->
-<div class="logout-button" style="position: absolute; top: 10px; right: 10px;">
-    <a href="{% url 'logout' %}"><button>Logout</button></a>
+<h2 class="my-4">Inventario Actual</h2>
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th>Artículo</th>
+                <th>Cantidad Total</th>
+                <th>Cantidad Disponible</th>
+                <th>Cantidad Prestada</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in inventario %}
+            <tr>
+                <td>{{ item.nombre }}</td>
+                <td>{{ item.cantidad_total }}</td>
+                <td>{{ item.cantidad_disponible }}</td>
+                <td>{{ item.cantidad_prestada }}</td>
+                <td>
+                    <a href="{% url 'asignar_inventario' %}" class="btn btn-sm btn-warning">Asignar</a>
+                    <a href="{% url 'devolver_inventario' %}" class="btn btn-sm btn-primary">Devolver</a>
+                    <a href="{% url 'eliminar_inventario' item.id %}" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar este producto?')">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
+
+<div class="text-center mt-4">
+    <a href="{% url 'admin_panel' %}" class="btn btn-secondary">Regresar</a>
+</div>
+
+{% endblock %}

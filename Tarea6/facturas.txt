@@ -7,3 +7,21 @@ Tiempo Total: 6 horas y 45 minutos
 Cantidad de horas cobradas: 7 horas
 Monto: Q135.00
 *********************************************
+Cliente: Fernando
+NIT: 2435986-4
+Placa: M734JKQ
+Entrada: 02:10
+Salida: 09:10
+Tiempo Total: 7 horas y 0 minutos
+Cantidad de horas cobradas: 7 horas
+Monto: Q135.00
+*********************************************
+Cliente: Tomas
+NIT: 2345124-0
+Placa: M126JUT
+Entrada: 09:00
+Salida: 13:09
+Tiempo Total: 4 horas y 9 minutos
+Cantidad de horas cobradas: 5 horas
+Monto: Q95.00
+*********************************************

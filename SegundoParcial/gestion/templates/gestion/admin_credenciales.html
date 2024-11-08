@@ -1,62 +1,209 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administrar Credenciales</title>
-    <style>
-        .logout-button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-        }
-    </style>
-</head>
-<body>
-    <div class="logout-button">
-        <a href="{% url 'logout' %}"><button>Logout</button></a>
+{% extends 'gestion/base.html' %}
+
+{% block title %}Administrar Credenciales{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">Administrar Credenciales</h4>
     </div>
-    <h1>Administrar Credenciales</h1>
+    <div class="card-body">
+        {% if messages %}
+            <div class="mt-3">
+                {% for message in messages %}
+                    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% if form.errors %}
+            <div class="alert alert-danger">
+                <ul>
+                    {% for field, errors in form.errors.items %}
+                        <li><strong>{{ field }}:</strong> {{ errors|join:", " }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+        <!-- Título del Formulario -->
+        <h5 class="text-secondary mb-3">Crear Usuario</h5>
 
-    <h2>Crear Usuario</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Crear Usuario</button>
-    </form>
+        <!-- Formulario de Creación de Usuario -->
+        <form method="post" autocomplete="off">  <!-- Desactivar autocompletado en todo el formulario -->
+            {% csrf_token %}
+            
+            <!-- Mostrar errores generales del formulario -->
+            {{ form.non_field_errors }}
+            
+            <!-- Nombre de usuario -->
+            <div class="form-group">
+                <label for="id_username">Nombre de usuario:</label>
+                {{ form.username }}
+                <small class="form-text text-muted">Requerido. Máx. 150 caracteres. Únicamente letras, dígitos y @/./+/-/_</small>
+            </div>
+        
+            <!-- Dirección de correo electrónico -->
+            <div class="form-group">
+                <label for="id_email">Dirección de correo electrónico:</label>
+                {{ form.email }}
+            </div>
+        
+            <!-- Contraseña -->
+            <div class="form-group">
+                <label for="id_password1">Contraseña:</label>
+                {{ form.password1 }}
+                <!-- Reglas de la Contraseña -->
+                <ul class="text-muted small pl-3 mb-3" style="list-style-type: circle;">
+                    <li>Su contraseña no debe asemejarse a su otra información personal.</li>
+                    <li>Su contraseña debe contener al menos 8 caracteres.</li>
+                    <li>Su contraseña no puede ser una clave utilizada comúnmente.</li>
+                    <li>Su contraseña no puede ser completamente numérica.</li>
+                </ul>
+            </div>
+        
+            <!-- Confirmación de contraseña -->
+            <div class="form-group">
+                <label for="id_password2">Confirmar contraseña:</label>
+                {{ form.password2 }}
+                <small class="form-text text-muted">Para verificar, introduzca la misma contraseña anterior.</small>
+            </div>
+        
+            <!-- Rol del usuario -->
+            <div class="form-group">
+                <label for="id_rol">Rol:</label>
+                {{ form.rol }}
+            </div>
+        
+            <!-- Botón de Envío -->
+            <button type="submit" class="btn btn-success btn-block">Crear Usuario</button>
+        </form>
+    </div>
+</div>
 
-    <h2>Usuarios Existentes</h2>
-    <table>
-        <thead>
+<!-- Pestañas para los roles con nav-pills para estilo de botones -->
+<ul class="nav nav-pills mb-4 justify-content-center" id="roleTabs">
+    <li class="nav-item">
+        <a class="nav-link active" id="admin-tab" onclick="showRole('admin')">Administradores</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="instructor-tab" onclick="showRole('instructor')">Instructores</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="alumno-tab" onclick="showRole('alumno')">Alumnos</a>
+    </li>
+</ul>
+
+<!-- Contenido para Administradores -->
+<div id="admin" class="role-content animate__animated animate__fadeIn">
+    <table class="table table-bordered table-hover">
+        <thead class="thead-dark">
             <tr>
                 <th>Nombre de usuario</th>
                 <th>Correo electrónico</th>
-                <th>Administrador</th>
-                <th>Instructor</th>
-                <th>Alumno</th>
                 <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
             {% for usuario in usuarios %}
-            <tr>
-                <td>{{ usuario.username }}</td>
-                <td>{{ usuario.email }}</td>
-                <td>{% if usuario.is_admin %}Sí{% else %}{% endif %}</td>
-                <td>{% if usuario.is_instructor %}Sí{% else %}{% endif %}</td>
-                <td>{% if usuario.is_alumno %}Sí{% else %}{% endif %}</td>
-                <td>
-                    <a href="{% url 'editar_usuario' usuario.id %}">Editar</a> | 
-                    <a href="{% url 'eliminar_usuario' usuario.id %}">Eliminar</a>
-                </td>
-            </tr>
+                {% if usuario.is_admin %}
+                <tr>
+                    <td>{{ usuario.username }}</td>
+                    <td>{{ usuario.email }}</td>
+                    <td>
+                        <a href="{% url 'editar_usuario' usuario.id %}" class="btn btn-sm btn-info">Editar</a>
+                        <a href="{% url 'eliminar_usuario' usuario.id %}" class="btn btn-sm btn-danger">Eliminar</a>
+                    </td>
+                </tr>
+                {% endif %}
             {% endfor %}
         </tbody>
     </table>
-<!-- Botón para regresar a la página anterior centrado -->
-<div style="margin-top: 20px; text-align: center;">
-    <button onclick="window.history.back()">Regresar</button>
 </div>
 
-</body>
-</html>
+<!-- Contenido para Instructores -->
+<div id="instructor" class="role-content animate__animated animate__fadeIn" style="display: none;">
+    <table class="table table-bordered table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th>Nombre de usuario</th>
+                <th>Correo electrónico</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for usuario in usuarios %}
+                {% if usuario.is_instructor %}
+                <tr>
+                    <td>{{ usuario.username }}</td>
+                    <td>{{ usuario.email }}</td>
+                    <td>
+                        <a href="{% url 'editar_usuario' usuario.id %}" class="btn btn-sm btn-info">Editar</a>
+                        <a href="{% url 'eliminar_usuario' usuario.id %}" class="btn btn-sm btn-danger">Eliminar</a>
+                    </td>
+                </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Contenido para Alumnos -->
+<div id="alumno" class="role-content animate__animated animate__fadeIn" style="display: none;">
+    <table class="table table-bordered table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th>Nombre de usuario</th>
+                <th>Correo electrónico</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for usuario in usuarios %}
+                {% if usuario.is_alumno %}
+                <tr>
+                    <td>{{ usuario.username }}</td>
+                    <td>{{ usuario.email }}</td>
+                    <td>
+                        <a href="{% url 'editar_usuario' usuario.id %}" class="btn btn-sm btn-info">Editar</a>
+                        <a href="{% url 'eliminar_usuario' usuario.id %}" class="btn btn-sm btn-danger">Eliminar</a>
+                    </td>
+                </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Botón de regreso al panel de administración -->
+<div class="text-center mt-4">
+    <a href="{% url 'admin_panel' %}" class="btn btn-secondary">Regresar</a>
+</div>
+
+<!-- JavaScript para mostrar/ocultar pestañas de roles con animación -->
+<script>
+    function showRole(role) {
+        // Ocultar todos los contenidos de roles
+        document.querySelectorAll('.role-content').forEach(content => {
+            content.style.display = 'none';
+        });
+
+        // Remover la clase 'active' de todas las pestañas
+        document.querySelectorAll('.nav-link').forEach(tab => {
+            tab.classList.remove('active');
+        });
+
+        // Mostrar el contenido y activar la pestaña seleccionada
+        const selectedTab = document.getElementById(role);
+        selectedTab.style.display = 'block';
+        selectedTab.classList.add('animate__fadeIn'); // Agregar animación
+        document.getElementById(role + '-tab').classList.add('active');
+    }
+</script>
+
+<!-- Enlace a Animate.css para animaciones adicionales -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+{% endblock %}

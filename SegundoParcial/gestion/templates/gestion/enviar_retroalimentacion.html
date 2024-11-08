@@ -1,0 +1,50 @@
+{% extends 'gestion/base.html' %}
+{% load custom_filters %}  <!-- Cargar los filtros personalizados -->
+
+{% block title %}Enviar Retroalimentación{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center mt-5">
+    <div class="card shadow-lg" style="width: 50%; border-radius: 10px;">
+        <div class="card-header bg-info text-white text-center" style="border-top-left-radius: 10px; border-top-right-radius: 10px;">
+            <h4 class="mb-0">Enviar Retroalimentación al Alumno</h4>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                
+                <!-- Campo Alumno -->
+                <div class="form-group">
+                    <label for="alumno" class="font-weight-bold">Alumno:</label>
+                    {{ form.alumno|add_class:"form-control" }}
+                </div>
+                
+                <!-- Campo Curso -->
+                <div class="form-group">
+                    <label for="curso" class="font-weight-bold">Curso:</label>
+                    {{ form.curso|add_class:"form-control" }}
+                </div>
+                
+                <!-- Campo Mensaje -->
+                <div class="form-group">
+                    <label for="mensaje" class="font-weight-bold">Mensaje:</label>
+                    {{ form.mensaje|add_class:"form-control" }}
+                </div>
+                
+                <!-- Botón de Enviar Retroalimentación -->
+                <button type="submit" class="btn btn-primary btn-block" style="border-radius: 5px;">Enviar Retroalimentación</button>
+                
+                <!-- Mensaje de éxito -->
+                {% if success %}
+                    <div class="alert alert-success mt-3" style="border-radius: 5px;">Retroalimentación enviada exitosamente.</div>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Botón de regreso centrado -->
+<div class="text-center mt-4">
+    <a href="{% url 'instructor_panel' %}" class="btn btn-secondary" style="border-radius: 5px;">Regresar</a>
+</div>
+{% endblock %}

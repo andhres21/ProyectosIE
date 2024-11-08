@@ -1,0 +1,42 @@
+{% extends 'gestion/base.html' %}
+
+{% block title %}Ver Inventario Asignado{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-secondary text-white">
+        <h4 class="mb-0">Inventario Asignado</h4>
+    </div>
+    <div class="card-body">
+        {% if inventario %}
+            <table class="table table-striped table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Artículo</th>
+                        <th>Cantidad Asignada</th>
+                        <th>Fecha de Asignación</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in inventario %}
+                    <tr>
+                        <td>{{ item.inventario.nombre }}</td>
+                        <td>{{ item.cantidad_asignada }}</td>
+                        <td>{{ item.fecha_asignacion }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No tienes inventario asignado.</p>
+        {% endif %}
+    </div>
+</div>
+
+
+<!-- Botón de regreso al panel de administración -->
+<div class="text-center mt-4">
+    <a href="{% url 'instructor_panel' %}" class="btn btn-secondary">Regresar</a>
+</div>
+
+{% endblock %}
